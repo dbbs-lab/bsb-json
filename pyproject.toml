@@ -19,3 +19,6 @@ json_templates = "bsb_json.templates"
 
 [tool.flit.module]
 name = "bsb_json"
+
+[project.optional-dependencies]
+test = ["bsb-test==0.0.0a0"]
