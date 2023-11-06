@@ -14,5 +14,8 @@ dependencies = ["bsb-core==4.0.0a60"]
 [project.entry-points."bsb.config.parsers"]
 json = "bsb_json.parser"
 
+[project.entry-points."bsb.config.templates"]
+json_templates = "bsb_json.templates"
+
 [tool.flit.module]
 name = "bsb_json"
