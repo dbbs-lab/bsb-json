@@ -4,12 +4,22 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "bsb-json"
-authors = [
-    {name = "Robin De Schepper", email = "robingilbert.deschepper@unipv.it"},
-]
+authors = [{name = "Robin De Schepper", email = "robingilbert.deschepper@unipv.it"}]
 readme = "README.md"
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-]
-requires-python = ">=3.8"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
 dynamic = ["version", "description"]
+requires-python = ">=3.8"
+dependencies = ["bsb-core==4.0.0a60"]
+
+[project.entry-points."bsb.config.parsers"]
+json = "bsb_json.parser"
+
+[project.entry-points."bsb.config.templates"]
+json_templates = "bsb_json.templates"
+
+[tool.flit.module]
+name = "bsb_json"
+
+[project.optional-dependencies]
+test = ["bsb-test==0.0.0a0"]
