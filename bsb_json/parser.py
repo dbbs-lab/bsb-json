@@ -100,7 +100,9 @@ class json_ref:
         self.node.rev_merge(target)
 
     def __str__(self):
-        return "<json ref '{}'>".format(((self.doc + "#") if self.doc else "") + self.ref)
+        return "<json ref '{}'>".format(
+            ((self.doc + "#") if self.doc else "") + self.ref
+        )
 
 
 class json_imp(json_ref):

@@ -17,6 +17,7 @@ def get_schema(root):
     schema["$defs"] = defs
     return schema
 
+
 def object_schema(obj, defs=None):
     schema = {"type": "object", "properties": {}}
     cls = obj.__class__
@@ -27,6 +28,7 @@ def object_schema(obj, defs=None):
         schema["properties"][attr] = attr_schema(hint, defs)
 
     return schema
+
 
 def attr_schema(hint, defs=None):
     if defs is None:
@@ -70,8 +72,10 @@ def attr_schema(hint, defs=None):
 
     return schema
 
+
 def defs_key(hint):
     return str(hint.__name__)
 
+
 def schema_def_ref(hint):
-    return { "$ref": f"#/$defs/{defs_key(hint)}" }
+    return {"$ref": f"#/$defs/{defs_key(hint)}"}

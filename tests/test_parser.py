@@ -38,7 +38,9 @@ class TestJsonRef(unittest.TestCase):
         self.assertNotIn("$ref", tree["refs"]["whats the"], "Ref key not removed")
         self.assertEqual("key", tree["refs"]["whats the"]["secret"])
         self.assertEqual("is hard", tree["refs"]["whats the"]["nested secrets"]["vim"])
-        self.assertEqual("convoluted", tree["refs"]["whats the"]["nested secrets"]["and"])
+        self.assertEqual(
+            "convoluted", tree["refs"]["whats the"]["nested secrets"]["and"]
+        )
         self.assertEqual(tree["refs"]["whats the"], tree["refs"]["omitted_doc"])
         with self.assertRaises(JsonReferenceError, msg="Should raise 'ref not a dict'"):
             tree, meta = config.get_parser("json").parse(
