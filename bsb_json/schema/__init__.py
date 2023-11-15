@@ -1,6 +1,5 @@
 import json
 import typing
-from bsb.core import Scaffold
 from bsb.config import get_config_attributes
 
 
@@ -19,6 +18,10 @@ def get_schema(root):
 
 
 def object_schema(obj, defs=None):
+    # Import the scaffold object here to avoid circular imports when the JSON parser is
+    # loaded.
+    from bsb.core import Scaffold
+
     schema = {"type": "object", "properties": {}}
     cls = obj.__class__
     obj_hints = typing.get_type_hints(cls, localns={"Scaffold": Scaffold})
