@@ -4,11 +4,12 @@ references.
 """
 
 import json
-import numpy as np
 import os
-from bsb.exceptions import JsonImportError, ConfigurationWarning, JsonReferenceError
-from bsb.reporting import warn
+
+import numpy as np
 from bsb.config.parsers import Parser
+from bsb.exceptions import ConfigurationWarning, JsonImportError, JsonReferenceError
+from bsb.reporting import warn
 
 
 def _json_iter(obj):  # pragma: nocover

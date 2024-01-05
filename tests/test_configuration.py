@@ -2,7 +2,7 @@ import json
 import unittest
 
 from bsb import config
-from bsb.config import from_json, Configuration
+from bsb.config import Configuration, from_json
 from bsb.core import Scaffold
 from bsb.exceptions import ConfigurationWarning
 from bsb_test import RandomStorageFixture, get_config_path

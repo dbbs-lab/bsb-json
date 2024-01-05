@@ -1,5 +1,6 @@
 import json
 import typing
+
 from bsb.config import get_config_attributes
 
 

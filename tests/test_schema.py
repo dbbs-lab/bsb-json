@@ -1,7 +1,8 @@
 import unittest
 
-from bsb_json import get_schema
 from bsb import config
+
+from bsb_json import get_schema
 
 
 def test_empty_schema():
