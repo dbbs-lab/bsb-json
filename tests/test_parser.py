@@ -1,3 +1,4 @@
+import pathlib
 import unittest
 
 from bsb import config
@@ -5,9 +6,8 @@ from bsb.exceptions import *
 from bsb_test import get_data_path
 
 
-def get_content(f):
-    with open(get_data_path("parser_tests", f), "r") as fh:
-        return fh.read()
+def get_content(file: str):
+    return (pathlib.Path(__file__).parent / "parser_tests" / file).read_text()
 
 
 class TestJsonBasics(unittest.TestCase):
