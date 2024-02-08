@@ -15,7 +15,7 @@ def as_json(name: str):
 
 
 class TestConfiguration(
-    RandomStorageFixture, unittest.TestCase, setup_cls=True, engine_name="hdf5"
+    RandomStorageFixture, unittest.TestCase, setup_cls=True, engine_name="fs"
 ):
     def test_default_bootstrap(self):
         cfg = config.Configuration.default()
