@@ -18,7 +18,7 @@ class TestConfiguration(
     RandomStorageFixture, unittest.TestCase, setup_cls=True, engine_name="fs"
 ):
     def test_default_bootstrap(self):
-        cfg = config.Configuration.default()
+        cfg = config.Configuration.default(storage={"engine": "fs"})
         Scaffold(cfg, self.storage)
 
     def test_json_minimal_bootstrap(self):
