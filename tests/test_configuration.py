@@ -1,55 +1,49 @@
 import json
 import unittest
+from tempfile import TemporaryFile
 
 from bsb import config
 from bsb.config import Configuration, from_json
 from bsb.core import Scaffold
-from bsb.exceptions import ConfigurationWarning
-from bsb_test import RandomStorageFixture, get_config_path
-
-minimal_config = get_config_path("test_minimal.json")
-full_config = get_config_path("test_core.json")
+from bsb_test import RandomStorageFixture, get_test_config, get_test_config_tree
 
 
-def as_json(f):
+def as_json(name: str):
     import json
 
-    with open(f, "r") as fh:
-        return json.load(fh)
+    return json.dumps(get_test_config_tree(name))
 
 
 class TestConfiguration(
-    RandomStorageFixture, unittest.TestCase, setup_cls=True, engine_name="hdf5"
+    RandomStorageFixture, unittest.TestCase, setup_cls=True, engine_name="fs"
 ):
     def test_default_bootstrap(self):
-        cfg = config.Configuration.default()
+        cfg = config.Configuration.default(storage={"engine": "fs"})
         Scaffold(cfg, self.storage)
 
     def test_json_minimal_bootstrap(self):
-        config = from_json(minimal_config)
+        with TemporaryFile(mode="w+") as f:
+            f.write(as_json("minimal"))
+            f.seek(0)
+            config = from_json(f)
         Scaffold(config, self.storage)
 
     def test_json_minimal_content_bootstrap(self):
-        with open(minimal_config, "r") as f:
-            content = f.read()
-        config = from_json(data=content)
+        config = from_json(data=as_json("minimal"))
         Scaffold(config, self.storage)
 
     def test_json_full_bootstrap(self):
-        config = from_json(full_config)
+        with TemporaryFile(mode="w+") as f:
+            f.write(as_json("full_compile"))
+            f.seek(0)
+            config = from_json(f)
         Scaffold(config, self.storage)
-
-    def test_json_full_no_unknown_attributes(self):
-        try:
-            with self.assertWarns(ConfigurationWarning) as cm:
-                from_json(full_config)
-            self.fail(f"Unknown configuration attributes detected: {cm.warning}")
-        except AssertionError:
-            pass
 
     @unittest.expectedFailure
     def test_full_bijective(self):
-        self.bijective("full", Configuration, as_json(full_config))
+        self.bijective(
+            "full_compile", Configuration, get_test_config_tree("full_compile")
+        )
 
     def bijective(self, name, cls, tree):
         # Test that the tree and its config projection are the same in JSON

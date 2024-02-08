@@ -1,3 +1,4 @@
+import pathlib
 import unittest
 
 from bsb import config
@@ -5,9 +6,8 @@ from bsb.exceptions import *
 from bsb_test import get_data_path
 
 
-def get_content(f):
-    with open(get_data_path("parser_tests", f), "r") as fh:
-        return fh.read()
+def get_content(file: str):
+    return (pathlib.Path(__file__).parent / "parser_tests" / file).read_text()
 
 
 class TestJsonBasics(unittest.TestCase):
@@ -50,7 +50,9 @@ class TestJsonRef(unittest.TestCase):
     def test_far_references(self):
         tree, meta = config.get_parser("json").parse(
             get_content("interdoc_refs.json"),
-            path=get_data_path("parser_tests", "interdoc_refs.json"),
+            path=str(
+                (pathlib.Path(__file__).parent / "parser_tests" / "interdoc_refs.json")
+            ),
         )
         self.assertIn("was", tree["refs"]["far"])
         self.assertEqual("in another folder", tree["refs"]["far"]["was"])
@@ -60,20 +62,24 @@ class TestJsonRef(unittest.TestCase):
     def test_double_ref(self):
         tree, meta = config.get_parser("json").parse(
             get_content("doubleref.json"),
-            path=get_data_path("parser_tests", "doubleref.json"),
+            path=str(
+                (pathlib.Path(__file__).parent / "parser_tests" / "doubleref.json")
+            ),
         )
 
     def test_ref_str(self):
         parser = config.get_parser("json")
         tree, meta = parser.parse(
             get_content("doubleref.json"),
-            path=get_data_path("parser_tests", "doubleref.json"),
+            path=str(
+                (pathlib.Path(__file__).parent / "parser_tests" / "doubleref.json")
+            ),
         )
         self.assertTrue(str(parser.references[0]).startswith("<json ref '"))
         # Convert windows backslashes
         wstr = str(parser.references[0]).replace("\\", "/")
         self.assertTrue(
-            wstr.endswith("/bsb_test/data/parser_tests/interdoc_refs.json#/target'>")
+            wstr.endswith("/bsb-json/tests/parser_tests/interdoc_refs.json#/target'>")
         )
 
 

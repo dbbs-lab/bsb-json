@@ -10,7 +10,7 @@ license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
 dynamic = ["version", "description"]
 requires-python = ">=3.8"
-dependencies = ["bsb-core>=4.0.0b0,<=4.0.0b9999"]
+dependencies = ["bsb-core>=4.0.0b6,<=4.0.0b9999"]
 
 [project.entry-points."bsb.config.parsers"]
 json = "bsb_json.parser"
@@ -22,7 +22,13 @@ json_templates = "bsb_json.templates"
 name = "bsb_json"
 
 [project.optional-dependencies]
-test = ["bsb-test>=0.0.0b0,<=0.0.0b9999"]
+test = ["bsb-core[parallel]", "bsb-test>=0.0.0b7,<=0.0.0b9999", "coverage~=7.0"]
+dev = [
+    "pre-commit~=3.5",
+    "black~=23.11",
+    "isort~=5.12",
+    "bump2version~=1.0"
+]
 
 [tool.isort]
 profile = "black"

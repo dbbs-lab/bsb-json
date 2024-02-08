@@ -1,0 +1,15 @@
+name: Run isort
+on:
+  - push
+
+jobs:
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      # Install dependencies for proper 1st/2nd/3rd party import sorting
+      - run: pip install -e .
+      - uses: isort/isort-action@master
