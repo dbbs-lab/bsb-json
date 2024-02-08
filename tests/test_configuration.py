@@ -5,8 +5,7 @@ from tempfile import TemporaryFile
 from bsb import config
 from bsb.config import Configuration, from_json
 from bsb.core import Scaffold
-from bsb.exceptions import ConfigurationWarning
-from bsb_test import RandomStorageFixture, get_test_config_tree, get_test_config
+from bsb_test import RandomStorageFixture, get_test_config, get_test_config_tree
 
 
 def as_json(name: str):
@@ -42,7 +41,9 @@ class TestConfiguration(
 
     @unittest.expectedFailure
     def test_full_bijective(self):
-        self.bijective("full_compile", Configuration, get_test_config_tree("full_compile"))
+        self.bijective(
+            "full_compile", Configuration, get_test_config_tree("full_compile")
+        )
 
     def bijective(self, name, cls, tree):
         # Test that the tree and its config projection are the same in JSON
