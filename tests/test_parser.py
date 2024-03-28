@@ -34,7 +34,9 @@ class TestJsonBasics(unittest.TestCase):
 
 class TestJsonRef(unittest.TestCase):
     def test_indoc_reference(self):
-        tree, meta = get_configuration_parser("json").parse(get_content("intradoc_refs.json"))
+        tree, meta = get_configuration_parser("json").parse(
+            get_content("intradoc_refs.json")
+        )
         self.assertNotIn("$ref", tree["refs"]["whats the"], "Ref key not removed")
         self.assertEqual("key", tree["refs"]["whats the"]["secret"])
         self.assertEqual("is hard", tree["refs"]["whats the"]["nested secrets"]["vim"])
@@ -85,7 +87,9 @@ class TestJsonRef(unittest.TestCase):
 
 class TestJsonImport(unittest.TestCase):
     def test_indoc_import(self):
-        tree, meta = get_configuration_parser("json").parse(get_content("indoc_import.json"))
+        tree, meta = get_configuration_parser("json").parse(
+            get_content("indoc_import.json")
+        )
         self.assertEqual(["with", "importable"], list(tree["imp"].keys()))
         self.assertEqual("are", tree["imp"]["importable"]["dicts"]["that"])
 

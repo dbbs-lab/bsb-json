@@ -2,8 +2,13 @@ import json
 import unittest
 from tempfile import TemporaryFile
 
-from bsb import Configuration, Scaffold, config, parse_configuration_file, \
-    parse_configuration_content
+from bsb import (
+    Configuration,
+    Scaffold,
+    config,
+    parse_configuration_content,
+    parse_configuration_file,
+)
 from bsb_test import RandomStorageFixture, get_test_config_tree
 
 
