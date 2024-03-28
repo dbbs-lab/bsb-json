@@ -2,10 +2,9 @@ import json
 import unittest
 from tempfile import TemporaryFile
 
-from bsb import config
-from bsb.config import Configuration, from_json
-from bsb.core import Scaffold
-from bsb_test import RandomStorageFixture, get_test_config, get_test_config_tree
+from bsb import Configuration, Scaffold, config, parse_configuration_file, \
+    parse_configuration_content
+from bsb_test import RandomStorageFixture, get_test_config_tree
 
 
 def as_json(name: str):
@@ -25,18 +24,18 @@ class TestConfiguration(
         with TemporaryFile(mode="w+") as f:
             f.write(as_json("minimal"))
             f.seek(0)
-            config = from_json(f)
+            config = parse_configuration_file(f, parser="json")
         Scaffold(config, self.storage)
 
     def test_json_minimal_content_bootstrap(self):
-        config = from_json(data=as_json("minimal"))
+        config = parse_configuration_content(as_json("minimal"), parser="json")
         Scaffold(config, self.storage)
 
     def test_json_full_bootstrap(self):
         with TemporaryFile(mode="w+") as f:
             f.write(as_json("full_compile"))
             f.seek(0)
-            config = from_json(f)
+            config = parse_configuration_file(f, parser="json")
         Scaffold(config, self.storage)
 
     @unittest.expectedFailure

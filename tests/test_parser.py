@@ -1,9 +1,9 @@
 import pathlib
 import unittest
 
-from bsb import config
-from bsb.exceptions import *
-from bsb_test import get_data_path
+from bsb import ConfigurationWarning, PluginError, get_configuration_parser
+
+from bsb_json.parser import JsonReferenceError
 
 
 def get_content(file: str):
@@ -12,15 +12,15 @@ def get_content(file: str):
 
 class TestJsonBasics(unittest.TestCase):
     def test_get_parser(self):
-        config.get_parser("json")
-        self.assertRaises(PluginError, config.get_parser, "doesntexist")
+        get_configuration_parser("json")
+        self.assertRaises(PluginError, get_configuration_parser, "doesntexist")
 
     def test_parse_empty_doc(self):
-        tree, meta = config.get_parser("json").parse(get_content("doc.json"))
+        tree, meta = get_configuration_parser("json").parse(get_content("doc.json"))
         self.assertEqual({}, tree, "'doc.json' parse should produce empty dict")
 
     def test_parse_basics(self):
-        tree, meta = config.get_parser("json").parse(get_content("basics.json"))
+        tree, meta = get_configuration_parser("json").parse(get_content("basics.json"))
         self.assertEqual(3, tree["list"][2], "Incorrectly parsed basic JSON")
         self.assertEqual(
             "just like that",
@@ -34,7 +34,7 @@ class TestJsonBasics(unittest.TestCase):
 
 class TestJsonRef(unittest.TestCase):
     def test_indoc_reference(self):
-        tree, meta = config.get_parser("json").parse(get_content("intradoc_refs.json"))
+        tree, meta = get_configuration_parser("json").parse(get_content("intradoc_refs.json"))
         self.assertNotIn("$ref", tree["refs"]["whats the"], "Ref key not removed")
         self.assertEqual("key", tree["refs"]["whats the"]["secret"])
         self.assertEqual("is hard", tree["refs"]["whats the"]["nested secrets"]["vim"])
@@ -43,12 +43,12 @@ class TestJsonRef(unittest.TestCase):
         )
         self.assertEqual(tree["refs"]["whats the"], tree["refs"]["omitted_doc"])
         with self.assertRaises(JsonReferenceError, msg="Should raise 'ref not a dict'"):
-            tree, meta = config.get_parser("json").parse(
+            tree, meta = get_configuration_parser("json").parse(
                 get_content("intradoc_nodict_ref.json")
             )
 
     def test_far_references(self):
-        tree, meta = config.get_parser("json").parse(
+        tree, meta = get_configuration_parser("json").parse(
             get_content("interdoc_refs.json"),
             path=str(
                 (pathlib.Path(__file__).parent / "parser_tests" / "interdoc_refs.json")
@@ -60,7 +60,7 @@ class TestJsonRef(unittest.TestCase):
         self.assertEqual("just like that", tree["refs"]["whats the"]["oh yea"])
 
     def test_double_ref(self):
-        tree, meta = config.get_parser("json").parse(
+        tree, meta = get_configuration_parser("json").parse(
             get_content("doubleref.json"),
             path=str(
                 (pathlib.Path(__file__).parent / "parser_tests" / "doubleref.json")
@@ -68,7 +68,7 @@ class TestJsonRef(unittest.TestCase):
         )
 
     def test_ref_str(self):
-        parser = config.get_parser("json")
+        parser = get_configuration_parser("json")
         tree, meta = parser.parse(
             get_content("doubleref.json"),
             path=str(
@@ -85,14 +85,14 @@ class TestJsonRef(unittest.TestCase):
 
 class TestJsonImport(unittest.TestCase):
     def test_indoc_import(self):
-        tree, meta = config.get_parser("json").parse(get_content("indoc_import.json"))
+        tree, meta = get_configuration_parser("json").parse(get_content("indoc_import.json"))
         self.assertEqual(["with", "importable"], list(tree["imp"].keys()))
         self.assertEqual("are", tree["imp"]["importable"]["dicts"]["that"])
 
     def test_indoc_import_list(self):
         from bsb_json.parser import parsed_list
 
-        tree, meta = config.get_parser("json").parse(
+        tree, meta = get_configuration_parser("json").parse(
             get_content("indoc_import_list.json")
         )
         self.assertEqual(["with", "importable"], list(tree["imp"].keys()))
@@ -100,14 +100,14 @@ class TestJsonImport(unittest.TestCase):
         self.assertEqual(parsed_list, type(tree["imp"]["with"][2]), "message")
 
     def test_indoc_import_value(self):
-        tree, meta = config.get_parser("json").parse(
+        tree, meta = get_configuration_parser("json").parse(
             get_content("indoc_import_other.json")
         )
         self.assertEqual(["with", "importable"], list(tree["imp"].keys()))
         self.assertEqual("a", tree["imp"]["with"])
 
     def test_import_merge(self):
-        tree, meta = config.get_parser("json").parse(
+        tree, meta = get_configuration_parser("json").parse(
             get_content("indoc_import_merge.json")
         )
         self.assertEqual(2, len(tree["imp"].keys()))
@@ -124,7 +124,7 @@ class TestJsonImport(unittest.TestCase):
 
     def test_import_overwrite(self):
         with self.assertWarns(ConfigurationWarning) as warning:
-            tree, meta = config.get_parser("json").parse(
+            tree, meta = get_configuration_parser("json").parse(
                 get_content("indoc_import_overwrite.json")
             )
         self.assertEqual(2, len(tree["imp"].keys()))

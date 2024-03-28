@@ -7,12 +7,7 @@ import json
 import os
 
 import numpy as np
-from bsb import (
-    ConfigurationParser,
-    ConfigurationWarning,
-    ParserError,
-    warn,
-)
+from bsb import ConfigurationParser, ConfigurationWarning, ParserError, warn
 
 
 class JsonImportError(ParserError):
