@@ -7,9 +7,20 @@ import json
 import os
 
 import numpy as np
-from bsb.config.parsers import Parser
-from bsb.exceptions import ConfigurationWarning, JsonImportError, JsonReferenceError
-from bsb.reporting import warn
+from bsb import (
+    ConfigurationParser,
+    ConfigurationWarning,
+    ParserError,
+    warn,
+)
+
+
+class JsonImportError(ParserError):
+    pass
+
+
+class JsonReferenceError(ParserError):
+    pass
 
 
 def _json_iter(obj):  # pragma: nocover
@@ -150,10 +161,10 @@ def _to_json(value):
     if isinstance(value, np.ndarray):
         return value.tolist()
     else:
-        raise TypeError()
+        raise TypeError(f"Can't encode '{value}' ({type(value)})")
 
 
-class JsonParser(Parser):
+class JsonParser(ConfigurationParser):
     """
     Parser plugin class to parse JSON configuration files.
     """
