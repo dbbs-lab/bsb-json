@@ -2,8 +2,7 @@ import pathlib
 import unittest
 
 from bsb import ConfigurationWarning, PluginError, get_configuration_parser
-
-from bsb_json.parser import JsonReferenceError
+from bsb.exceptions import FileReferenceError
 
 
 def get_content(file: str):
@@ -28,7 +27,7 @@ class TestJsonBasics(unittest.TestCase):
             "Incorrectly parsed nested JSON",
         )
         self.assertEqual(
-            "<parsed json config '[1, 2, 3, 'waddup']' at '/list'>", str(tree["list"])
+            "<parsed file config '[1, 2, 3, 'waddup']' at '/list'>", str(tree["list"])
         )
 
 
@@ -44,7 +43,7 @@ class TestJsonRef(unittest.TestCase):
             "convoluted", tree["refs"]["whats the"]["nested secrets"]["and"]
         )
         self.assertEqual(tree["refs"]["whats the"], tree["refs"]["omitted_doc"])
-        with self.assertRaises(JsonReferenceError, msg="Should raise 'ref not a dict'"):
+        with self.assertRaises(FileReferenceError, msg="Should raise 'ref not a dict'"):
             tree, meta = get_configuration_parser("json").parse(
                 get_content("intradoc_nodict_ref.json")
             )
@@ -77,7 +76,7 @@ class TestJsonRef(unittest.TestCase):
                 (pathlib.Path(__file__).parent / "parser_tests" / "doubleref.json")
             ),
         )
-        self.assertTrue(str(parser.references[0]).startswith("<json ref '"))
+        self.assertTrue(str(parser.references[0]).startswith("<file ref '"))
         # Convert windows backslashes
         wstr = str(parser.references[0]).replace("\\", "/")
         self.assertTrue(
@@ -94,7 +93,7 @@ class TestJsonImport(unittest.TestCase):
         self.assertEqual("are", tree["imp"]["importable"]["dicts"]["that"])
 
     def test_indoc_import_list(self):
-        from bsb_json.parser import parsed_list
+        from bsb.config._parse_types import parsed_list
 
         tree, meta = get_configuration_parser("json").parse(
             get_content("indoc_import_list.json")
