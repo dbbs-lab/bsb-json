@@ -6,7 +6,7 @@ references.
 import json
 
 import numpy as np
-from bsb.config.parsers import ReferenceParser
+from bsb.config.parsers import ConfigurationParser, ParsesReferences
 
 
 def _json_iter(obj):  # pragma: nocover
@@ -25,7 +25,7 @@ def _to_json(value):
         raise TypeError(f"Can't encode '{value}' ({type(value)})")
 
 
-class JsonParser(ReferenceParser):
+class JsonParser(ParsesReferences, ConfigurationParser):
     """
     Parser plugin class to parse JSON configuration files.
     """
@@ -34,11 +34,10 @@ class JsonParser(ReferenceParser):
     data_extensions = ("json",)
     data_syntax = "json"
 
-    def from_str(self, filename):
-        return json.loads(filename)
-
-    def load_content(self, stream):
-        return json.load(stream)
+    def parse(self, content, path=None):
+        if isinstance(content, str):
+            content = json.loads(content)
+        return content, {"meta": path}
 
     def generate(self, tree, pretty=False):
         if pretty:
