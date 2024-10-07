@@ -1,10 +1,9 @@
 name: Build and test BSB JSON
 
-on: [push, pull_request]
+on: [workflow_call]
 
 jobs:
   build:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,6 +26,7 @@ jobs:
         pip install --upgrade pip
         # Install self, with test dependencies
         pip install .[test]
+
     - name: Run tests & coverage
       run: |
         coverage run -p -m unittest discover -v -s ./tests
