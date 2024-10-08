@@ -24,10 +24,13 @@ name = "bsb_json"
 [project.optional-dependencies]
 test = ["bsb-core[parallel]", "bsb-test~=4.0", "coverage~=7.0"]
 dev = [
+    "bsb-json[test]",
+    "build~=1.0",
+    "twine~=4.0",
     "pre-commit~=3.5",
-    "black~=24.0",
+    "black~=24.1.1",
     "isort~=5.12",
-    "bump-my-version~=0.18"
+    "bump-my-version~=0.24"
 ]
 
 [tool.isort]
