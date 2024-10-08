@@ -43,7 +43,6 @@ class TestConfiguration(
             config = parse_configuration_file(f, parser="json")
         Scaffold(config, self.storage)
 
-    @unittest.expectedFailure
     def test_full_bijective(self):
         self.bijective(
             "full_compile", Configuration, get_test_config_tree("full_compile")
