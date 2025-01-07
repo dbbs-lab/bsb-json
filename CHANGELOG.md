@@ -1,3 +1,8 @@
+## [v4.2.2] - 2025-01-07
+### :bug: Bug Fixes
+- [`450117a`](https://github.com/dbbs-lab/bsb-json/commit/450117a09570eb395b1fc74fe4922036be2b8919) - BSB version dependencies *(PR [#7](https://github.com/dbbs-lab/bsb-json/pull/7) by [@drodarie](https://github.com/drodarie))*
+
+
 ## [v4.2.1] - 2024-10-17
 ### :bug: Bug Fixes
 - [`e4451fc`](https://github.com/dbbs-lab/bsb-json/commit/e4451fc9de18a50a8226e1de7fbf6b2479c5126b) - Update configuration templates, remove ParticlePlacement *(PR [#6](https://github.com/dbbs-lab/bsb-json/pull/6) by [@drodarie](https://github.com/drodarie))*
@@ -23,3 +28,4 @@
 [v4.1.0]: https://github.com/dbbs-lab/bsb-json/compare/v4.0.0...v4.1.0
 [v4.2.0]: https://github.com/dbbs-lab/bsb-json/compare/v4.1.0...v4.2.0
 [v4.2.1]: https://github.com/dbbs-lab/bsb-json/compare/v4.2.0...v4.2.1
+[v4.2.2]: https://github.com/dbbs-lab/bsb-json/compare/v4.2.1...v4.2.2
