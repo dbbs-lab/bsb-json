@@ -1,3 +1,8 @@
+## [v4.2.3] - 2025-03-03
+### :bug: Bug Fixes
+- [`9b93aac`](https://github.com/dbbs-lab/bsb-json/commit/9b93aaccf55587030e0edbc13fbb3098140186d3) - using isort 6.0.0 and black 25.1.0 *(PR [#8](https://github.com/dbbs-lab/bsb-json/pull/8) by [@drodarie](https://github.com/drodarie))*
+
+
 ## [v4.2.2] - 2025-01-07
 ### :bug: Bug Fixes
 - [`450117a`](https://github.com/dbbs-lab/bsb-json/commit/450117a09570eb395b1fc74fe4922036be2b8919) - BSB version dependencies *(PR [#7](https://github.com/dbbs-lab/bsb-json/pull/7) by [@drodarie](https://github.com/drodarie))*
@@ -29,3 +34,4 @@
 [v4.2.0]: https://github.com/dbbs-lab/bsb-json/compare/v4.1.0...v4.2.0
 [v4.2.1]: https://github.com/dbbs-lab/bsb-json/compare/v4.2.0...v4.2.1
 [v4.2.2]: https://github.com/dbbs-lab/bsb-json/compare/v4.2.1...v4.2.2
+[v4.2.3]: https://github.com/dbbs-lab/bsb-json/compare/v4.2.2...v4.2.3
